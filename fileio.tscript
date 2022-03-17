@@ -1,0 +1,64 @@
+$saveRecord = new arrayobject();
+$saveRecord.add("<general>","");
+
+function writeSave(%name)
+{
+	$saveRecord.empty();
+	getPrefpath();
+	%file = new FileObject();
+	if(%file.openForWrite($prefpath @"/saves/" @ %name @ ".sav"))
+	{
+		callonModules("insertSaveData","Game");
+		saveEntries(%file);
+		%file.close();
+	}
+	else
+	{
+		error( "Failed to open " @ %name @ " for writing" );
+	}
+	%file.delete();
+}
+
+function readSave(%name)
+{
+	$saveRecord.empty();
+	%file = new FileObject();
+    %couldRead = false;
+	if(%file.openForRead(getPrefpath() @"/saves/" @ %name @ ".sav"))
+	{
+		readEntries(%file);
+        callonModules("onSaveLoaded","Game");
+		%couldRead = true;
+	}
+    %file.close();
+    %file.delete();
+    
+    return %couldRead;
+}
+
+function saveEntries(%file)
+{
+	%count = $saveRecord.count();
+	for(%i=0;%i<%count;%i++)
+	{
+		%line = $saveRecord.getKey(%i) SPC $saveRecord.getValue(%i);
+		%file.writeLine(%line);
+	}
+}
+
+function readEntries(%file)
+{
+    %curModule = "general";
+	while (!%file.isEof())
+	{
+		%temp = %file.readLine();
+        if (strchrpos(getword(%temp,0),"<")>-1)
+        {
+            %curModule = stripChars(%temp,"< >");
+            $saveRecord.add("<"@%curModule@">","");
+            continue;
+        }   
+		$saveRecord.add(getword(%temp,0),getwords(%temp,1,getWordCount(%temp)));
+	}
+    callonModules("parseSaveData","Game");
+}
