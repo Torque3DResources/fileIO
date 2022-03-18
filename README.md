@@ -17,7 +17,7 @@ Reads the lines of a sav file as opened by ```readSave()```. Uses <@moduleName> 
 ```insertSaveData()```
 A module namespace function that is signaled by ```writeSave()```. Adds records into the ```$saveRecords``` array for writing out to the sav file.
 
-```paresSaveData()```
+```parseSaveData()```
 A module namespace function that is signaled by ```readSave()```. Reads records from the ```$saveRecords``` array for updating game values pulled from the sav file. 
 
 ```onSaveLoaded()```
