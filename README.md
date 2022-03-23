@@ -1,4 +1,9 @@
 # Generic file I/O module
+A module that implements basic saving and loading of data from files on disk. 
+
+# Usage and Instructions
+### Installation
+Copy entire fileIO folder into the Torque3D project's data/ folder, restart the project if it's running and it'll be integrated.
 
 ## Commands:
 ```writeSave(%name)```
