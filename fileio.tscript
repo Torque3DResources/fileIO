@@ -3,6 +3,7 @@ $saveRecord.add("<general>","");
 
 function writeSave(%name)
 {
+    if (%name $= "") return;
 	$saveRecord.empty();
 	getPrefpath();
 	%file = new FileObject();
@@ -21,6 +22,7 @@ function writeSave(%name)
 
 function readSave(%name)
 {
+    if (%name $= "") return;
 	$saveRecord.empty();
 	%file = new FileObject();
     %couldRead = false;
